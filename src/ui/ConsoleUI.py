@@ -1,4 +1,4 @@
-from src.model.GameState import GameState as Game
+from src.model.GameModel import GameModel as Game
 from ui.ConsoleCommands import get_all_commands, Command
 import typing
 

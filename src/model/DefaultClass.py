@@ -40,8 +40,8 @@ class Ability:
     attack_bonus: int
     desc: str
     name: str
-    damage_bonus: int # can be NULL
-    damage_dice: str # can be NULL
+    damage_bonus: int  # can be NULL
+    damage_dice: str  # can be NULL
 
 
 # Represents a class
@@ -68,12 +68,11 @@ class DefaultClass:
         self.languages: str = languages
         self.challenge_rating: int = challenge_rating
         self.special_abilities: typing.List[Ability] = special_abilities
-        self.actions: List[Ability] = actions
+        self.actions: typing.List[Ability] = actions
         self.legendary_actions: typing.List[Ability] = legendary_actions
 
-
     def roll_initiative(self):
-        return get_ability_mod(self.stat_block.dexterity). + Dice.roll_dice(20)
+        return get_ability_mod(self.stat_block.dexterity) + Dice.roll_dice(20)
 
     def is_dead(self) -> bool:
         return self.hit_points <= 0

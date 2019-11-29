@@ -3,7 +3,7 @@ from model.DefaultClassBuilder import DefaultClassBuilder
 
 
 class PlayerCharacter:
-    DEFAULT_CLASS: DefaultClass = DefaultClassBuilder("playerDefault")
+    DEFAULT_CLASS: DefaultClass = DefaultClassBuilder("playerDefault").default_class
 
     def __init__(self, player_name: str, character_name: str = "", default_class: DefaultClass = DEFAULT_CLASS):
         self.default_class = default_class

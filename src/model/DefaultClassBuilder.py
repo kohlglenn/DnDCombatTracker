@@ -30,3 +30,6 @@ class DefaultClassBuilder:
 
     def set_hit_points(self, hp: int):
         self.default_class.hit_points = hp
+
+    def get_default_class(self):
+        return self.default_class

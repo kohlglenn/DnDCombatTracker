@@ -3,7 +3,7 @@ from model.DefaultClassBuilder import DefaultClassBuilder
 
 
 class Npc:
-    DEFAULT_CLASS: DefaultClass = DefaultClassBuilder("default_name")
+    DEFAULT_CLASS: DefaultClass = DefaultClassBuilder("default_name").default_class
 
     def __init__(self,  name: str, default_class: DefaultClass = DEFAULT_CLASS):
         self.default_class = default_class
