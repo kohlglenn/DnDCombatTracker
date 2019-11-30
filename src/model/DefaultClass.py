@@ -3,6 +3,7 @@ import typing
 from enum import Enum, unique
 import math
 
+
 @unique
 class Size(Enum):
     TINY = "TINY"

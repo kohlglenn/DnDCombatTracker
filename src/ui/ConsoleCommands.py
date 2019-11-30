@@ -11,7 +11,7 @@ def get_all_commands():
 
 class Command(ABC):
     @abstractmethod
-    def execute(self, game: GameModel):
+    def execute(self, **kwargs):
         pass
 
     @abstractmethod

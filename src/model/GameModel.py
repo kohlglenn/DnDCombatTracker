@@ -3,15 +3,13 @@ from src.model.DefaultClass import DefaultClass
 from src.model.Npc import Npc
 import typing
 from typing import Optional, Union, List
+"""Contains information about the GameState such as characters in the game"""
 
-Character = Union[PlayerCharacter, Npc]
 
-
+# Singleton pattern in Python uses the constructor and a private constructor anyways so can just update later on
 class GameModel:
-    players: typing.List[PlayerCharacter]
-    npcs: typing.List[Npc]
-    combat_list: typing.List[Character]
-    current_turn: int
+    players: List[PlayerCharacter]
+    npcs: List[Npc]
 
     def __init__(self):
         self.players = []
@@ -20,9 +18,6 @@ class GameModel:
     def add_player(self, pc: PlayerCharacter):
         self.players.append(pc)
 
-    def add_player_by_name(self, pc: str):
-        self.players.append(PlayerCharacter(pc))
-
     def add_npc(self, npc: Npc):
         self.npcs.append(npc)
 
@@ -30,7 +25,7 @@ class GameModel:
     def remove_npc(self, npc: Npc):
         self.npcs.remove(npc)
 
-    def roll_npc_initiative(self):
+    def roll_all_npc_initiative(self):
         for npc in self.npcs:
             npc.roll_initiative()
 
@@ -66,23 +61,8 @@ class GameModel:
             self.players.remove(pc)
             return pc
 
-    # Must start combat before using combat functions
-    # TODO: Exception handling or setting combat flag?
-    def start_combat(self):
-        self.roll_npc_initiative()
-        self.combat_list = [*self.players, *self.npcs]
-        self.combat_list.sort(key=lambda char: char.initiative, reverse=True)
-        self.current_turn = 0
+    def start_combat(self) -> CombatWrapper:
+        return CombatWrapper(game=self)
 
-    def get_combat_order(self):
-        return self.combat_list
-
-    def get_current_actor(self):
-        return self.combat_list[self.current_turn]
-
-    def get_next_actor(self):
-        idx = self.current_turn + 1 if self.current_turn <= len(self.combat_list) - 2 else 0
-        return self.combat_list[idx]
-
-    def next_actor(self):
-        self.current_turn = self.current_turn + 1 if self.current_turn <= len(self.combat_list) - 2 else 0
+    def add_player_by_name(self, pc: str):
+        self.players.append(PlayerCharacter(pc))
