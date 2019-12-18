@@ -10,10 +10,12 @@ from typing import Optional, Union, List
 class GameModel:
     players: List[PlayerCharacter]
     npcs: List[Npc]
+    combat: bool
 
     def __init__(self):
         self.players = []
         self.npcs = []
+        self.combat = False
 
     def add_player(self, pc: PlayerCharacter):
         self.players.append(pc)
@@ -61,8 +63,8 @@ class GameModel:
             self.players.remove(pc)
             return pc
 
-    def start_combat(self) -> CombatWrapper:
-        return CombatWrapper(game=self)
+    def start_combat(self):
+        self.combat = True
 
     def add_player_by_name(self, pc: str):
         self.players.append(PlayerCharacter(pc))
