@@ -6,6 +6,8 @@ from typing import Optional, Union, List
 """Contains information about the GameState such as characters in the game"""
 
 
+# TODO: Does this really need to know about the combat status? I think the only reason I need it is for rolling npc
+# TODO: init but can't that be handled by the presenter and this will just be the data structure?
 # Singleton pattern in Python uses the constructor and a private constructor anyways so can just update later on
 class GameModel:
     players: List[PlayerCharacter]

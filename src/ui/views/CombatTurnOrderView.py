@@ -5,6 +5,7 @@ from presenter.GamePresenter import GamePresenter
 from ui.views.IView import IView
 from typing import List, Tuple
 from ui.views.TtkUtil import get_font_with_modified_settings as get_font
+from ui.views.ActorDetailView import ActorDetailView
 
 
 # TODO: Refactor out all of the style settings into a main app folder, refactor GameModel, implement GamePresenter
@@ -29,15 +30,19 @@ class CombatTurnOrderView(IView, Frame):
         self.master.title("Combat Order")
         self.grid()
 
+        info_label = Label(self, text="Click on a name to see details", style="ITALIC.TLabel")
+        info_label.grid(row=0, column=0, columnspan=2)
+
         name_label = Label(self, text="Character Name", style="TITLE.TLabel")
-        name_label.grid(row=0, column=0)
+        name_label.grid(row=1, column=0)
 
         class_label = Label(self, text="Initiative", style="TITLE.TLabel")
-        class_label.grid(row=0, column=1)
+        class_label.grid(row=1, column=1)
 
         self.render_actors()
 
     def render_actors(self):
+        last_row = 1
         for i in range(0, len(self.actors)):
             if i == self.current_turn:
                 label_style = "BLUE.TLabel"
@@ -45,14 +50,22 @@ class CombatTurnOrderView(IView, Frame):
                 label_style = "DEFAULT.TLabel"
             temp_name_label = Label(self, text=self.actors[i][0], style=label_style)
             temp_init_label = Label(self, text=self.actors[i][1], style=label_style)
-            temp_name_label.grid(row=i + 1, column=0)
-            temp_init_label.grid(row=i + 1, column=1)
+            temp_name_label.grid(row=i + last_row + 1, column=0)
+            temp_init_label.grid(row=i + last_row + 1, column=1)
+            temp_name_label.bind("<Button 1>", lambda event, actor=self.actors[i][0]:
+                                 self.open_detail_view(actor))
+            temp_init_label.bind("<Button 1>", lambda event, actor=self.actors[i][0]:
+            self.open_detail_view(actor))
 
         self.next_button = Button(self, text="Next", command=self.next_actor)
         self.update_button = Button(self, text="Update", command=self.update)
-        row = len(self.actors) + 1
+        row = len(self.actors) + last_row + 1
         self.update_button.grid(row=row, column=0)
         self.next_button.grid(row=row, column=1)
+
+    def open_detail_view(self, actor: str):
+        extra_window = tk.Toplevel(root)
+        ActorDetailView(actor, extra_window)
 
     def next_actor(self):
         self.current_turn = (self.current_turn + 1) % (len(self.actors))
@@ -75,6 +88,8 @@ style.theme_use('clam')
 style.configure("DEFAULT.TLabel")
 bold_button_font = get_font(tk.Button(None), ["weight"], ["bold"])
 style.configure("BLUE.TLabel", background="#adc8ef", font=bold_button_font)
+italic_font = get_font(tk.Label(None), ["slant"], ["italic"])
+style.configure("ITALIC.TLabel", font=italic_font)
 title_font = get_font(tk.Label(None), ["weight", "underline"], ["bold", "true"])
 style.configure("TITLE.TLabel", font=title_font, anchor="center")
 

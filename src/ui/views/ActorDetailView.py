@@ -19,7 +19,6 @@ class ActorDetailView(IView, Frame):
         self.update_button = None
         self.current_turn = 0
         self.hp_val = tk.StringVar()
-        self.hp_val.set("195")
         self.init_window()
 
     # TODO: Finish copying format from here https://tetra-cube.com/dnd/dnd-statblock.html
@@ -28,21 +27,68 @@ class ActorDetailView(IView, Frame):
         self.master.title("Actor Detail View")
         self.pack()
 
-        name_label = Label(self, text="Adult Black Dragon")
-        name_label.pack()
-        size_alignment_label = Label(self, text="Huge dragon, chaotic evil")
+        class_name = self.presenter.get_actor_class_name(self.actor)
+        type_subtype = self.presenter.get_actor_type_subtype(self.actor)
+        alignment = self.presenter.get_actor_alignment(self.actor)
+        armor_class = self.presenter.get_actor_armor_class(self.actor)
+        hp = self.presenter.get_actor_hp(self.actor)
+        speed = self.presenter.get_actor_speed(self.actor)
+        saving_throws = self.presenter.get_actor_save_throws(self.actor)
+        immunities = self.presenter.get_actor_immunities(self.actor)
+        resistances = self.presenter.get_actor_resistances(self.actor)
+        senses = self.presenter.get_actor_senses(self.actor)
+        languages = self.presenter.get_actor_languages(self.actor)
+
+        self.hp_val.set(hp)
+        sep = ", "
+        saving_throws_str = sep.join(saving_throws)
+        immunities_str = sep.join(immunities)
+        resistances_str = sep.join(resistances)
+        senses_str = sep.join(senses)
+        languages_str = sep.join(languages)
+
+        actor_name_label = Label(self, text=self.actor)
+        actor_name_label.pack()
+        class_name_label = Label(self, text=class_name)
+        class_name_label.pack()
+        size_alignment_label = Label(self, text=(type_subtype + ", " + alignment).capitalize())
         size_alignment_label.pack()
-        ac_label = Label(self, text="Armor Class 19 (natural armor)")
+        ac_label = Label(self, text="Armor Class " + armor_class)
         ac_label.pack()
         hp_label = Label(self, text="Hit Points")
         hp_label.pack()
         hp_entry = Entry(self, textvariable=self.hp_val)
         hp_entry.pack()
-        speed_label = Label(self, text="Speed 40 ft., fly 80 ft., swim 20 ft.")
+        speed_label = Label(self, text=speed.capitalize())
         speed_label.pack()
         self.pack_table(headers=["STR", "DEX", "CON", "INT", "WIS", "CHA"],
                         values=[self.presenter.get_stat_block_with_mods(self.actor)])
-
+        save_label = Label(self, text="Saving throws: " + saving_throws_str)
+        save_label.pack()
+        damage_immunity_label = Label(self, text="Damage Immunities: " + immunities_str)
+        damage_immunity_label.pack()
+        damage_resistance_label = Label(self, text="Damage Resistances: " + resistances_str)
+        damage_resistance_label.pack()
+        senses_label = Label(self, text="Senses: " + senses_str)
+        senses_label.pack()
+        language_label = Label(self, text="Languages: " + languages_str)
+        language_label.pack()
+        special_abilities = self.presenter.get_actor_special_abilities(self.actor)
+        for ability in special_abilities:
+            temp_label = Label(self, text=ability)
+            temp_label.pack()
+        action_label = Label(self, text="Actions")
+        action_label.pack()
+        actions = self.presenter.get_actor_actions(self.actor)
+        for action in actions:
+            temp_label = Label(self, text=action)
+            temp_label.pack()
+        l_action_label = Label(self, text="Legendary Actions")
+        l_action_label.pack()
+        l_actions = self.presenter.get_actor_legendary_actions(self.actor)
+        for action in l_actions:
+            temp_label = Label(self, text=action)
+            temp_label.pack()
 
     def pack_table(self, headers: List[str], values: List[List[str]]):
         table = Frame(self)

@@ -49,3 +49,45 @@ class GamePresenter:
 
     def get_stat_block_with_mods(self, actor: str):
         return ["10 (0)", "10 (0)", "10 (0)", "10 (0)", "10 (0)", "10 (0)"]
+
+    def get_actor_special_abilities(self, actor: str):
+        return []
+
+    def get_actor_actions(self, actor: str):
+        return ["An action +5 to hit"]
+
+    def get_actor_legendary_actions(self, actor: str):
+        return []
+
+    def get_actor_class_name(self, actor):
+        return ""
+
+    def get_actor_type_subtype(self, actor):
+        return ""
+
+    def get_actor_alignment(self, actor):
+        return ""
+
+    def get_actor_armor_class(self, actor):
+        return ""
+
+    def get_actor_hp(self, actor):
+        return ""
+
+    def get_actor_speed(self, actor):
+        return ""
+
+    def get_actor_save_throws(self, actor):
+        return []
+
+    def get_actor_immunities(self, actor):
+        return []
+
+    def get_actor_resistances(self, actor):
+        return []
+
+    def get_actor_senses(self, actor):
+        return []
+
+    def get_actor_languages(self, actor):
+        return []
