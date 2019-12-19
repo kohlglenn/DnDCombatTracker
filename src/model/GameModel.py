@@ -1,5 +1,4 @@
 from src.model.PlayerCharacter import PlayerCharacter
-from src.model.DefaultClass import DefaultClass
 from src.model.Npc import Npc
 import typing
 from typing import Optional, Union, List

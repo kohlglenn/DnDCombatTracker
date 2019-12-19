@@ -1,5 +1,4 @@
 import tkinter as tk
-import tkinter.font as tkFont
 from tkinter.ttk import *
 from presenter.GamePresenter import GamePresenter
 from ui.views.IView import IView
@@ -10,6 +9,9 @@ from ui.views.ActorDetailView import ActorDetailView
 
 # TODO: Refactor out all of the style settings into a main app folder, refactor GameModel, implement GamePresenter
 # TODO: Add binding to each label to bring up the actor detail view where you can change stuff
+# TODO: Add feature to color dead/dying actors another color (?!) and skip over or delete dead actors
+# TODO: Add feature to add another actor during combat
+# TODO: feature - remove actor during combat
 class CombatTurnOrderView(IView, Frame):
     actors: List[Tuple[str, int]]
 

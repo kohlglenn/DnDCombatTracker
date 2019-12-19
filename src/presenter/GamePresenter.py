@@ -1,13 +1,14 @@
 """Represents presenter that interacts between views and model"""
 from typing import Dict, TYPE_CHECKING
-if TYPE_CHECKING:
-    from ui.views.CreateNpcView import CreateNpcView
 from model.GameModel import GameModel
 from ui.views.IView import IView
 
 
+# TODO: Clean up import statements
+# TODO: Implement stubs
 class GamePresenter:
     def __init__(self):
+        # TODO: Hook up to some kind of database
         self.npc_classes = ["Goblin", "Bugbear", "Lich"]
         self.player_classes = ["Paladin", "Rogue"]
         self.game = GameModel()

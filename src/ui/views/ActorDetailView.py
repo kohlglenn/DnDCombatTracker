@@ -7,6 +7,7 @@ from typing import List, Tuple
 from ui.views.TtkUtil import get_font_with_modified_settings as get_font
 
 
+# TODO: Implement way to update actor hp
 class ActorDetailView(IView, Frame):
     def __init__(self, actor: str, master=None):
         Frame.__init__(self, master)
@@ -21,8 +22,7 @@ class ActorDetailView(IView, Frame):
         self.hp_val = tk.StringVar()
         self.init_window()
 
-    # TODO: Finish copying format from here https://tetra-cube.com/dnd/dnd-statblock.html
-    # TODO: Make it look nicer
+    # TODO: Make it look nicer with headers and formatting
     def init_window(self):
         self.master.title("Actor Detail View")
         self.pack()
