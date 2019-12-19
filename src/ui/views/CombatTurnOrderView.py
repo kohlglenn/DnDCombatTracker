@@ -54,10 +54,10 @@ class CombatTurnOrderView(IView, Frame):
             temp_init_label = Label(self, text=self.actors[i][1], style=label_style)
             temp_name_label.grid(row=i + last_row + 1, column=0)
             temp_init_label.grid(row=i + last_row + 1, column=1)
-            temp_name_label.bind("<Button 1>", lambda event, actor=self.actors[i][0]:
-                                 self.open_detail_view(actor))
-            temp_init_label.bind("<Button 1>", lambda event, actor=self.actors[i][0]:
-            self.open_detail_view(actor))
+            temp_name_label.bind("<Button 1>",
+                                 lambda event, actor=self.actors[i][0]: self.open_detail_view(actor))
+            temp_init_label.bind("<Button 1>",
+                                 lambda event, actor=self.actors[i][0]: self.open_detail_view(actor))
 
         self.next_button = Button(self, text="Next", command=self.next_actor)
         self.update_button = Button(self, text="Update", command=self.update)
@@ -66,7 +66,7 @@ class CombatTurnOrderView(IView, Frame):
         self.next_button.grid(row=row, column=1)
 
     def open_detail_view(self, actor: str):
-        extra_window = tk.Toplevel(root)
+        extra_window = tk.Toplevel(self.master)
         ActorDetailView(actor, extra_window)
 
     def next_actor(self):

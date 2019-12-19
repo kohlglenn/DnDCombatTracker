@@ -58,7 +58,7 @@ class CreateNpcView(IView, Frame):
             npc_dict["name"] = self.npc_name_entries[idx].get()
             npc_dict["class"] = self.npc_class_entries[idx].get()
             data_dict[idx] = str(npc_dict)
-        self.presenter.add_npcs_from_view(data_dict, self)
+        self.presenter.add_npcs_from_view(data_dict)
 
     def update(self, **kwargs):
         pass

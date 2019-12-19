@@ -7,7 +7,6 @@ from typing import List, Tuple
 from ui.views.TtkUtil import get_font_with_modified_settings as get_font
 
 
-# TODO: Implement way to update actor hp
 class ActorDetailView(IView, Frame):
     def __init__(self, actor: str, master=None):
         Frame.__init__(self, master)
@@ -20,6 +19,7 @@ class ActorDetailView(IView, Frame):
         self.update_button = None
         self.current_turn = 0
         self.hp_val = tk.StringVar()
+        self.hp_entry = None
         self.init_window()
 
     # TODO: Make it look nicer with headers and formatting
@@ -28,10 +28,12 @@ class ActorDetailView(IView, Frame):
         self.pack()
 
         class_name = self.presenter.get_actor_class_name(self.actor)
+        size = self.presenter.get_actor_size(self.actor)
         type_subtype = self.presenter.get_actor_type_subtype(self.actor)
         alignment = self.presenter.get_actor_alignment(self.actor)
         armor_class = self.presenter.get_actor_armor_class(self.actor)
-        hp = self.presenter.get_actor_hp(self.actor)
+        # hp = self.presenter.get_actor_hp(self.actor)
+        hp = "10"
         speed = self.presenter.get_actor_speed(self.actor)
         saving_throws = self.presenter.get_actor_save_throws(self.actor)
         immunities = self.presenter.get_actor_immunities(self.actor)
@@ -51,14 +53,14 @@ class ActorDetailView(IView, Frame):
         actor_name_label.pack()
         class_name_label = Label(self, text=class_name)
         class_name_label.pack()
-        size_alignment_label = Label(self, text=(type_subtype + ", " + alignment).capitalize())
+        size_alignment_label = Label(self, text=(size + " " + type_subtype + ", " + alignment).capitalize())
         size_alignment_label.pack()
         ac_label = Label(self, text="Armor Class " + armor_class)
         ac_label.pack()
         hp_label = Label(self, text="Hit Points")
         hp_label.pack()
-        hp_entry = Entry(self, textvariable=self.hp_val)
-        hp_entry.pack()
+        self.hp_entry = Entry(self, textvariable=self.hp_val)
+        self.hp_entry.pack()
         speed_label = Label(self, text=speed.capitalize())
         speed_label.pack()
         self.pack_table(headers=["STR", "DEX", "CON", "INT", "WIS", "CHA"],
@@ -89,6 +91,8 @@ class ActorDetailView(IView, Frame):
         for action in l_actions:
             temp_label = Label(self, text=action)
             temp_label.pack()
+        update_button = Button(self, text="Update HP", command=self.update_actor_stats)
+        update_button.pack()
 
     def pack_table(self, headers: List[str], values: List[List[str]]):
         table = Frame(self)
@@ -104,6 +108,14 @@ class ActorDetailView(IView, Frame):
 
     def update(self, **kwargs):
         pass
+
+    def update_actor_stats(self):
+        try:
+            hp = int(self.hp_entry.get())
+            self.presenter.update_actor_hp(self.actor, hp)
+        except ValueError:
+            # do nothing because the value was not a string TODO: Maybe error popup?
+            dummy = 10
 
 
 root = tk.Tk()

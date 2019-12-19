@@ -1,4 +1,7 @@
-from model.DefaultClass import DefaultClass, Size, StatBlock, Ability
+from model.DefaultClass import DefaultClass
+from model.Ability import Ability
+from model.StatBlock import StatBlock
+from model.Size import Size
 import typing
 
 
