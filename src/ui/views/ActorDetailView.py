@@ -32,22 +32,16 @@ class ActorDetailView(IView, Frame):
         type_subtype = self.presenter.get_actor_type_subtype(self.actor)
         alignment = self.presenter.get_actor_alignment(self.actor)
         armor_class = self.presenter.get_actor_armor_class(self.actor)
-        # hp = self.presenter.get_actor_hp(self.actor)
-        hp = "10"
+        hp = self.presenter.get_actor_hp(self.actor)
         speed = self.presenter.get_actor_speed(self.actor)
         saving_throws = self.presenter.get_actor_save_throws(self.actor)
+        vulnerabilities = self.presenter.get_actor_vulnerabilities(self.actor)
         immunities = self.presenter.get_actor_immunities(self.actor)
         resistances = self.presenter.get_actor_resistances(self.actor)
         senses = self.presenter.get_actor_senses(self.actor)
         languages = self.presenter.get_actor_languages(self.actor)
 
         self.hp_val.set(hp)
-        sep = ", "
-        saving_throws_str = sep.join(saving_throws)
-        immunities_str = sep.join(immunities)
-        resistances_str = sep.join(resistances)
-        senses_str = sep.join(senses)
-        languages_str = sep.join(languages)
 
         actor_name_label = Label(self, text=self.actor)
         actor_name_label.pack()
@@ -65,15 +59,17 @@ class ActorDetailView(IView, Frame):
         speed_label.pack()
         self.pack_table(headers=["STR", "DEX", "CON", "INT", "WIS", "CHA"],
                         values=[self.presenter.get_stat_block_with_mods(self.actor)])
-        save_label = Label(self, text="Saving throws: " + saving_throws_str)
+        save_label = Label(self, text="Saving throws: " + saving_throws)
         save_label.pack()
-        damage_immunity_label = Label(self, text="Damage Immunities: " + immunities_str)
+        damage_vuln_label = Label(self, text="Damage vulnerabilities: " + vulnerabilities)
+        damage_vuln_label.pack()
+        damage_immunity_label = Label(self, text="Damage Immunities: " + immunities)
         damage_immunity_label.pack()
-        damage_resistance_label = Label(self, text="Damage Resistances: " + resistances_str)
+        damage_resistance_label = Label(self, text="Damage Resistances: " + resistances)
         damage_resistance_label.pack()
-        senses_label = Label(self, text="Senses: " + senses_str)
+        senses_label = Label(self, text="Senses: " + senses)
         senses_label.pack()
-        language_label = Label(self, text="Languages: " + languages_str)
+        language_label = Label(self, text="Languages: " + languages)
         language_label.pack()
         special_abilities = self.presenter.get_actor_special_abilities(self.actor)
         for ability in special_abilities:
@@ -111,10 +107,15 @@ class ActorDetailView(IView, Frame):
 
     def update_actor_stats(self):
         try:
-            hp = int(self.hp_entry.get())
-            self.presenter.update_actor_hp(self.actor, hp)
+            hp_str: str = self.hp_entry.get()
+            if hp_str.startswith("+") or hp_str.startswith("-"):
+                hp = int(hp_str) if hp_str.startswith("-") else int(hp_str[1:])
+                self.presenter.update_actor_hp(self.actor, hp)
+            else:
+                hp = int(self.hp_entry.get())
+                self.presenter.set_actor_hp(self.actor, hp)
         except ValueError:
-            # do nothing because the value was not a string TODO: Maybe error popup?
+            # do nothing because the value was not a string TODO: Maybe error popup? And update w actor hp
             dummy = 10
 
 

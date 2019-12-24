@@ -1,7 +1,8 @@
 from src.model.PlayerCharacter import PlayerCharacter
 from src.model.Npc import Npc
 import typing
-from typing import Optional, Union, List
+from typing import Optional, Union, List, Callable
+from .AbstractActor import AbstractActor
 """Contains information about the GameState such as characters in the game"""
 
 
@@ -69,3 +70,23 @@ class GameModel:
 
     def add_player_by_name(self, pc: str):
         self.players.append(PlayerCharacter(pc))
+
+    def get_actor(self, actor_name: str):
+        actors: List[AbstractActor] = [*self.npcs, *self.players]
+        idx = find_in_list(actors, lambda x: is_player_or_npc(x, actor_name))
+        if idx != -1:
+            return actors[idx]
+        else:
+            return PlayerCharacter("player_name")
+            # TODO raise ValueError("Not found.")
+
+
+def is_player_or_npc(actor: AbstractActor, name: str):
+    return actor.name == name
+
+
+def find_in_list(my_list: List, predicate: Callable) -> int:
+    for i in range(0, len(my_list)):
+        if predicate(my_list[i]):
+            return i
+    return -1

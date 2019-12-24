@@ -54,10 +54,9 @@ class CreatePlayerView(IView, Frame):
     def send_data(self):
         data_dict = dict()
         for idx in range(0, len(self.player_name_entries)):
-            npc_dict = dict()
-            npc_dict["name"] = self.player_name_entries[idx].get()
-            npc_dict["class"] = self.player_class_entries[idx].get()
-            data_dict[idx] = str(npc_dict)
+            player_dict = dict()
+            player_dict["name"] = self.player_name_entries[idx].get()
+            player_dict["class"] = self.player_class_entries[idx].get()
         self.presenter.add_players_from_view(data_dict)
 
     def update(self, **kwargs):

@@ -11,7 +11,7 @@ class DefaultClassBuilder:
         self.default_class = DefaultClass(name, Size.MEDIUM, "Generic", "", "any alignment",
                                           10, 10, "", "30 ft.", StatBlock(),
                                           "", "", "", "", "Common", 1, [],
-                                          [], [])
+                                          [], [], {})
 
     def set_stat_block(self, strength: int = 10, dexterity: int = 10, constitution: int = 10,
                        intelligence: int = 10, wisdom: int = 10, charisma: int = 10):
@@ -32,7 +32,7 @@ class DefaultClassBuilder:
         self.default_class.armor_class = armor_class
 
     def set_hit_points(self, hp: int):
-        self.default_class.hit_points = hp
+        self.default_class.max_hit_points = hp
 
     def get_default_class(self):
         return self.default_class

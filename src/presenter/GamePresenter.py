@@ -7,10 +7,9 @@ from model.Npc import Npc
 from model.PlayerCharacter import PlayerCharacter
 from model.Ability import Ability
 from model.StatBlock import StatBlock, get_ability_mod
+from model.AbstractActor import AbstractActor
 
 
-# TODO: Clean up import statements
-# TODO: Implement stubs
 class GamePresenter:
     def __init__(self):
         # TODO: Hook up to some kind of database
@@ -42,7 +41,7 @@ class GamePresenter:
     def get_actor_list(self):
         players = self.game.players
         npcs = self.game.npcs
-        player_names = [x.character_name + " " + x.player_name for x in players]
+        player_names = [x.character_name + " " + x.name for x in players]
         npc_names = [x.name for x in npcs]
         return [*player_names, *npc_names]
 
@@ -55,58 +54,106 @@ class GamePresenter:
         return [*player_init, *npc_init]
 
     def get_stat_block_with_mods(self, actor_name: str):
-        actor: Actor = self.game.get_actor(actor_name)
-        stats = actor.get_stat_block()
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        stats = actor.get_stat_block_values()
         stat_block_str = [stat_block_to_str_with_mod(stat) for stat in stats]
-        return " ".join(stat_block_str)
+        return stat_block_str
 
-    def get_actor_special_abilities(self, actor: str):
-        return []
+    def get_actor_special_abilities(self, actor_name: str):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        abilities = actor.get_special_abilities()
+        return [str(a) for a in abilities]
 
-    def get_actor_actions(self, actor: str):
-        return ["An action +5 to hit"]
+    def get_actor_actions(self, actor_name: str):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        actions = actor.get_actions()
+        return [str(a) for a in actions]
 
-    def get_actor_legendary_actions(self, actor: str):
-        return []
+    def get_actor_legendary_actions(self, actor_name: str):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        actions = actor.get_legendary_actions()
+        return [str(a) for a in actions]
 
-    def get_actor_class_name(self, actor):
-        return ""
+    def get_actor_class_name(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        name = actor.get_class_name()
+        return name
 
-    def get_actor_type_subtype(self, actor):
-        return ""
+    def get_actor_type_subtype(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        type = actor.get_type()
+        subtype = actor.get_subtype()
+        return str(type) + " " + str(subtype)
 
-    def get_actor_alignment(self, actor):
-        return ""
+    def get_actor_alignment(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        type = actor.get_type()
+        subtype = actor.get_subtype()
+        return str(type) + " " + str(subtype)
 
-    def get_actor_armor_class(self, actor):
-        return ""
+    def get_actor_armor_class(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        ac = actor.get_armor_class()
+        return str(ac)
 
-    def get_actor_hp(self, actor):
-        return ""
+    def get_actor_hp(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        hp = actor.get_hp()
+        return str(hp)
 
-    def get_actor_speed(self, actor):
-        return ""
+    def get_actor_speed(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        speed = actor.get_speed()
+        return speed
 
-    def get_actor_save_throws(self, actor):
-        return []
+    def get_actor_save_throws(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        # Return in a dict with format {Str: 6, Wis: -2, ...}
+        save_throws = actor.get_save_throws()
+        ret_val = []
+        for (stat, mod) in save_throws.items():
+            mod_str = str(mod) if mod < 0 else "+" + str(mod)
+            ret_val.append(stat + " " + mod_str)
+        return ", ".join(ret_val)
 
-    def get_actor_immunities(self, actor):
-        return []
+    def get_actor_immunities(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        immunities = actor.get_immunities()
+        return immunities
 
-    def get_actor_resistances(self, actor):
-        return []
+    def get_actor_resistances(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        resistances = actor.get_resistances()
+        return resistances
 
-    def get_actor_senses(self, actor):
-        return []
+    def get_actor_vulnerabilities(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        vulnerabilities = actor.get_vulnerabilities()
+        return vulnerabilities
 
-    def get_actor_languages(self, actor):
-        return []
+    def get_actor_senses(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        senses = actor.get_senses()
+        return senses
 
-    def get_actor_size(self, actor):
-        return ""
+    def get_actor_languages(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        languages = actor.get_languages()
+        return languages
 
-    def update_actor_hp(self, actor, hp):
-        pass
+    def get_actor_size(self, actor_name):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        size = actor.get_size()
+        return str(size)
+
+    def update_actor_hp(self, actor_name, hp):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        new_hp = actor.get_hp() + hp
+        actor.set_hp(new_hp)
+
+    def set_actor_hp(self, actor_name, hp):
+        actor: AbstractActor = self.game.get_actor(actor_name)
+        actor.set_hp(hp)
 
 
 def stat_block_to_str_with_mod(stat: str):

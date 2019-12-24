@@ -70,7 +70,8 @@ class CombatTurnOrderView(IView, Frame):
         ActorDetailView(actor, extra_window)
 
     def next_actor(self):
-        self.current_turn = (self.current_turn + 1) % (len(self.actors))
+        if len(self.actors) > 0:
+            self.current_turn = (self.current_turn + 1) % (len(self.actors))
         self.render_actors()
 
     def update(self, **kwargs):

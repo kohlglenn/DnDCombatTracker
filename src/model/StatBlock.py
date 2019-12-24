@@ -11,6 +11,10 @@ class StatBlock:
         self.wisdom: int = wisdom
         self.charisma: int = charisma
 
+    def get_stat_block_values(self):
+        return [self.strength, self.dexterity, self.constitution,
+                self.intelligence, self.wisdom, self.charisma]
+
 
 def get_ability_mod(ability_score):
     return math.floor((ability_score - 10) / 2)
