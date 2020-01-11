@@ -3,8 +3,7 @@ import json
 from aiohttp import ClientSession
 from typing import List
 from model.DefaultClassBuilder import parse_to_default_class
-
-dnd_5e_url = "http://www.dnd5eapi.co/"
+from persistence.DefaultClassDBHandler import DefaultClassDBHandler
 
 
 # TODO: finish implementation. Parse information, check if exists in database or send to database (TinyDB)
@@ -33,6 +32,7 @@ async def fetch(url, session):
 async def get_all_monsters():
     tasks = []
     monster_list = await get_monster_url_list()
+    db = DefaultClassDBHandler()
 
     # Fetch all responses within one Client session,
     # keep connection alive for all requests.
@@ -45,9 +45,7 @@ async def get_all_monsters():
         # you now have all response bodies in this variable
         for response in responses:
             default_class = parse_to_default_class(json.loads(response))
-            if default_class.class_name == "Adult Green Dragon":
-                print(default_class.__dict__)
-            # TODO: do something w this
+            db.insert(default_class)
 
 
 loop = asyncio.get_event_loop()

@@ -22,5 +22,7 @@ class TestDnd5eapiParser(unittest.TestCase):
 
 # Creates an Adult Green Dragon as per the spec provided on http://www.dnd5eapi.co/api/monsters/adult-green-dragon/
 # retrieved Jan 11, 2020
+# TODO: Finish implementation
 def __create_adult_green_dragon() -> DefaultClass:
     agd = DefaultClassBuilder("Adult Green Dragon")
+    return agd.get_default_class()

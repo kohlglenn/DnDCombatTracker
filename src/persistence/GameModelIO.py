@@ -7,7 +7,6 @@ data_folder = cwd / "data"
 game_model_file_path = data_folder / "game_models.pickle"
 
 
-# TODO: Be able to save/load multiple game models (to pre-make battles or save a template with PCs and stuff like that)
 def save_game_model(game: GameModel):
     try:
         file = open(game_model_file_path, 'wb')
