@@ -61,10 +61,3 @@ class CreatePlayerView(IView, Frame):
 
     def update(self, **kwargs):
         pass
-
-
-root = Tk()
-style = Style()
-style.theme_use('clam')
-app = CreatePlayerView(root)
-root.mainloop()

@@ -6,7 +6,6 @@ from model.DefaultClassBuilder import parse_to_default_class
 from persistence.DefaultClassDBHandler import DefaultClassDBHandler
 
 
-# TODO: finish implementation. Parse information, check if exists in database or send to database (TinyDB)
 async def get_monster_url_list() -> List[str]:
     url = "http://www.dnd5eapi.co/api/monsters/"
     async with ClientSession() as session:
@@ -19,7 +18,6 @@ async def get_monster_url_list() -> List[str]:
                 base_url = "http://www.dnd5eapi.co"
                 # url_suffix e.g. "/api/monsters/aboleth"
                 url_suffix = result["results"][i]["url"]
-                print(url_suffix + "\n")
                 ret_val.append(base_url + url_suffix)
             return ret_val
 
@@ -45,7 +43,8 @@ async def get_all_monsters():
         # you now have all response bodies in this variable
         for response in responses:
             default_class = parse_to_default_class(json.loads(response))
-            db.insert(default_class)
+            db.insert_default_class(default_class)
+            db.save()
 
 
 loop = asyncio.get_event_loop()

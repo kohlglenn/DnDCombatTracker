@@ -2,7 +2,7 @@
 from typing import Dict, TYPE_CHECKING, Union
 from model.GameModel import GameModel
 from ui.views.IView import IView
-import model.ClassManager as Cm
+from model.ClassManager import ClassManager
 from model.Npc import Npc
 from model.PlayerCharacter import PlayerCharacter
 from model.Ability import Ability
@@ -10,12 +10,28 @@ from model.StatBlock import StatBlock, get_ability_mod
 from model.AbstractActor import AbstractActor
 
 
+# TODO: Set up __str__ methods in model classes, adjust defaults in parsing from None to ""
+# Set up using the singleton pattern found here
+# https://python-3-patterns-idioms-test.readthedocs.io/en/latest/Singleton.html
 class GamePresenter:
-    def __init__(self):
-        # TODO: Hook up to some kind of database
-        self.npc_classes = ["Goblin", "Bugbear", "Lich"]
-        self.player_classes = ["Paladin", "Rogue"]
-        self.game = GameModel()
+    __instance = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+    def __new__(cls):
+        if GamePresenter.__instance is None:
+            GamePresenter.__instance = object.__new__(cls)
+            with GamePresenter.__instance as self:
+                self.cm = ClassManager()
+                self.npc_classes = self.cm.get_all_default_class_names()
+                self.player_classes = ["Generic"]
+                self.game = GameModel()
+                return self
+        return GamePresenter.__instance
 
     def get_npc_classes(self):
         return self.npc_classes
@@ -24,7 +40,7 @@ class GamePresenter:
         for (_, npc) in npc_dict.items():
             name = npc["name"]
             npc_class_name = npc["class"]
-            npc_class = Cm.get_default_class(npc_class_name)
+            npc_class = self.cm.get_default_class(npc_class_name)
             self.game.add_npc(Npc(name, npc_class))
 
     def get_player_classes(self):
@@ -34,7 +50,7 @@ class GamePresenter:
         for (_, player) in player_dict.items():
             name = player["name"]
             player_class_name = player["class"]
-            player_class = Cm.get_default_class(player_class_name)
+            player_class = self.cm.get_default_class(player_class_name)
             self.game.add_player(PlayerCharacter(name, player_class))
 
     # Returns list of names in order of *players, *npcs
@@ -156,7 +172,7 @@ class GamePresenter:
         actor.set_hp(hp)
 
 
-def stat_block_to_str_with_mod(stat: str):
+def stat_block_to_str_with_mod(stat: int):
     mod = get_ability_mod(stat)
     mod_str = str(mod) if mod < 0 else "+" + str(mod)
     return str(stat) + "(" + mod_str + ")"

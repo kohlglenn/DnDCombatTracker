@@ -11,7 +11,7 @@ class DefaultClassBuilder:
     def __init__(self, name):
         self.default_class = DefaultClass(name, Size.MEDIUM, "Generic", "", "any alignment",
                                           10, 10, "", "30 ft.", StatBlock(),
-                                          "", "", "", "", "Common", 1, [],
+                                          "", "", "", "", "", "Common", 1, [],
                                           [], [], {})
 
     def set_stat_block(self, strength: int = 10, dexterity: int = 10, constitution: int = 10,

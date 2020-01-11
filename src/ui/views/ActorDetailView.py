@@ -117,13 +117,3 @@ class ActorDetailView(IView, Frame):
         except ValueError:
             # do nothing because the value was not a string TODO: Maybe error popup? And update w actor hp
             dummy = 10
-
-
-root = tk.Tk()
-root.geometry("300x400")
-style = Style()
-style.theme_use('clam')
-underline_label_font = get_font(tk.Label(None), ["underline"], ["true"])
-style.configure("UNDERLINE.TLabel", font=underline_label_font)
-app = ActorDetailView("Test", root)
-root.mainloop()

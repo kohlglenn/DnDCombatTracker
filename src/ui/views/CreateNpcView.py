@@ -1,3 +1,4 @@
+from ui.views.tkentrycomplete import AutocompleteCombobox
 from tkinter import *
 from tkinter.ttk import *
 from presenter.GamePresenter import GamePresenter
@@ -40,7 +41,8 @@ class CreateNpcView(IView, Frame):
         name_entry.grid(row=row, column=0)
         self.npc_name_entries.append(name_entry)
 
-        class_entry = Combobox(self, values=self.presenter.get_npc_classes())
+        class_entry = AutocompleteCombobox(self)
+        class_entry.set_completion_list(self.presenter.get_npc_classes())
         class_entry.grid(row=row, column=1)
         self.npc_class_entries.append(class_entry)
 
@@ -62,10 +64,3 @@ class CreateNpcView(IView, Frame):
 
     def update(self, **kwargs):
         pass
-
-
-root = Tk()
-style = Style()
-style.theme_use('clam')
-app = CreateNpcView(root)
-root.mainloop()

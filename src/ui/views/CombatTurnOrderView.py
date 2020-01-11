@@ -3,7 +3,6 @@ from tkinter.ttk import *
 from presenter.GamePresenter import GamePresenter
 from ui.views.IView import IView
 from typing import List, Tuple
-from ui.views.TtkUtil import get_font_with_modified_settings as get_font
 from ui.views.ActorDetailView import ActorDetailView
 
 
@@ -83,18 +82,3 @@ class CombatTurnOrderView(IView, Frame):
         initiative = self.presenter.get_initiative_list()
         return [(x, y) for (x, y) in sorted(zip(actors, initiative), key=lambda pair: pair[1], reverse=True)]
 
-
-root = tk.Tk()
-style = Style()
-style.theme_use('clam')
-
-style.configure("DEFAULT.TLabel")
-bold_button_font = get_font(tk.Button(None), ["weight"], ["bold"])
-style.configure("BLUE.TLabel", background="#adc8ef", font=bold_button_font)
-italic_font = get_font(tk.Label(None), ["slant"], ["italic"])
-style.configure("ITALIC.TLabel", font=italic_font)
-title_font = get_font(tk.Label(None), ["weight", "underline"], ["bold", "true"])
-style.configure("TITLE.TLabel", font=title_font, anchor="center")
-
-app = CombatTurnOrderView(root)
-root.mainloop()

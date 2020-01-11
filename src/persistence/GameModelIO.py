@@ -2,7 +2,7 @@ from pathlib import Path
 import pickle
 from model.GameModel import GameModel
 
-cwd = Path.cwd().parent
+cwd = Path(os.path.dirname(os.path.realpath(__file__))).parent
 data_folder = cwd / "data"
 game_model_file_path = data_folder / "game_models.pickle"
 

@@ -1,8 +1,9 @@
 from pathlib import Path
 import pickle
+from typing import List
+import os
 
-
-cwd = Path.cwd().parent
+cwd = Path(os.path.dirname(os.path.realpath(__file__))).parent
 data_folder = cwd / "data"
 db_file_path = data_folder / "default_class_db.pickle"
 
@@ -20,11 +21,12 @@ class DefaultClassDBHandler(object):
             file.close()
         return DefaultClassDBHandler.__instance
 
-    def insert(self, default_class):
-        print("Inserting %s\n" % default_class.class_name)
-        self.__class_list.append(default_class)
+    def insert_default_class(self, default_class):
+        if default_class not in self.__class_list:
+            self.__class_list.append(default_class)
 
-    def get_all_database_objects(self):
+    # NOTE: Assumes list is not mutated
+    def get_all_default_classes(self) -> List:
         return self.__class_list
 
     def save(self):
