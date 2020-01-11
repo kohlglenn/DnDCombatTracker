@@ -1,6 +1,6 @@
 from . import DiceRoller as Dice
 import typing
-from typing import Dict
+from typing import Dict, List
 from .Ability import Ability
 from .Size import Size
 from .StatBlock import StatBlock, get_ability_mod
@@ -11,9 +11,10 @@ import math
 class DefaultClass:
     def __init__(self, class_name: str, size: Size, type: str, subtype: str, alignment: str,
                  armor_class: int, max_hit_points: int, hit_dice: str, speed: str, stat_block: StatBlock,
-                 damage_vulnerabilities: str, damage_resistances: str, condition_immunities: str,
-                 senses: str, languages: str, challenge_rating: int, special_abilities: typing.List[Ability],
-                 actions: typing.List[Ability], legendary_actions: typing.List[Ability], save_throws: Dict[str, int]):
+                 damage_vulnerabilities: str, damage_resistances: str, damage_immunities: str,
+                 condition_immunities: str, senses: str, languages: str, challenge_rating: int,
+                 special_abilities: List[Ability], actions: List[Ability], legendary_actions: List[Ability],
+                 save_throws: Dict[str, int]):
         self.class_name: str = class_name
         self.size: Size = size
         self.type: str = type
@@ -26,6 +27,7 @@ class DefaultClass:
         self.stat_block: StatBlock = stat_block
         self.damage_vulnerabilities: str = damage_vulnerabilities
         self.damage_resistances: str = damage_resistances
+        self.damage_immunities: str = damage_immunities
         self.condition_immunities: str = condition_immunities
         self.senses: str = senses
         self.languages: str = languages
@@ -43,4 +45,7 @@ class DefaultClass:
 
     # Accurately maps CR 0-30 to proficiency bonus +2-+9
     def get_proficiency_mod(self) -> int:
-        return 2 + math.floor((self.challenge_rating - 1) / 4)
+        if 1 < self.challenge_rating <= 30:
+            return 2 + math.floor((self.challenge_rating - 1) / 4)
+        else:
+            return 2 if self.challenge_rating < 1 else 9
